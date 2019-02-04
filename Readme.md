@@ -32,3 +32,12 @@ module.exports = {
   // ...
 }
 ```
+
+And watch files changes inside `main.js`:
+
+```javascript
+const { app, BrowserWindow } = require("electron");
+// ...
+require("electron-watcher-webpack-plugin").watch();
+// ...
+```

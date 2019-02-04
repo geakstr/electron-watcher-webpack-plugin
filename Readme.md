@@ -6,11 +6,11 @@ npm install electron-watcher-webpack-plugin --save-dev
 
 ## Usage
 
-Add to webpack config plugins array:
+Add to `webpack.config.js` plugins array:
 
 ```javascript
 const path = require("path");
-const ElectronWatcherWebpackPlugin = require("electron-watcher-webpack-plugin");
+const { ElectronWatcherWebpackPlugin } = require("electron-watcher-webpack-plugin");
 // ...
 module.exports = {
   // ...

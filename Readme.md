@@ -1,12 +1,12 @@
 ## Installation
 
-```bash
+```shell
 npm install electron-watcher-webpack-plugin --save-dev
 ```
 
 ## Usage
 
-Add to webpack configs plugins section:
+Add to webpack config plugins array:
 
 ```javascript
 const path = require("path");

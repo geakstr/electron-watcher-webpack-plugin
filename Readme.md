@@ -18,7 +18,7 @@ module.exports = {
     // ...
     new ElectronWatcherWebpackPlugin({
       // absolute path to electron main process file (required)
-      main: path.resolve(__dirname, "src/main.js"),
+      main: path.resolve(__dirname, "./src/main.js"),
       // absolute path to electron (required)
       electron: path.resolve(__dirname, "./node_modules/.bin/electron"),
       // skip renderers processes (optional)

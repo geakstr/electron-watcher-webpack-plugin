@@ -1,7 +1,7 @@
 ## Installation
 
 ```shell
-npm install electron-watcher-webpack-plugin --save-dev
+npm install electron-watcher-webpack-plugin --save
 ```
 
 ## Usage

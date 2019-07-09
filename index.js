@@ -5,14 +5,14 @@ const { spawn } = require("child_process");
 const { app } = require("electron");
 const chokidar = require("chokidar");
 
-const createHardWatcher = dirs => {
-  chokidar.watch(dirs.main).on("change", () => app.exit(0));
+const createHardWatcher = options => {
+  chokidar.watch(options.main).on("change", () => app.exit(0));
 };
 
-const createSoftWatcher = dirs => {
+const createSoftWatcher = options => {
   const browserWindows = [];
   chokidar
-    .watch(dirs.root, { ignored: [dirs.main, /node_modules|[/\\]\./] })
+    .watch(options.root, { ignored: [options.main, /node_modules|[/\\]\./] })
     .on("change", () =>
       browserWindows.forEach(bw => bw.webContents.reloadIgnoringCache())
     );
@@ -25,9 +25,15 @@ const createSoftWatcher = dirs => {
   });
 };
 
-exports.watch = function watch(dirs) {
-  createHardWatcher(dirs);
-  createSoftWatcher(dirs);
+exports.watch = function watch(options) {
+  const isDev =
+    "ELECTRON_IS_DEV" in process.env
+      ? parseInt(process.env.ELECTRON_IS_DEV, 10) === 1
+      : !(require("electron").app || require("electron").remote.app).isPackaged;
+  if (options.forceWatch === true || isDev) {
+    createHardWatcher(options);
+    createSoftWatcher(options);
+  }
 };
 
 let webpackPluginStarted = false;

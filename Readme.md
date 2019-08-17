@@ -17,15 +17,15 @@ module.exports = {
   plugins: [
     // ...
     new ElectronWatcherWebpackPlugin({
-      // Absolute path to project root (where package.json placed). Required
-      electron: path.resolve(__dirname, "./node_modules/.bin/electron"),
-      // Absolute path to electron main process directory or file. Required
-      main: path.resolve(__dirname, "./src/main"),
+      // Absolute path to directory where node_modules placed. Required
+      root: __dirname,
+      // List of globs to watch for hard reload. Required
+      watch: [path.resolve(__dirname, "./src/main")],
       // Launch electron only once. Default: true. Optional
       once: true,
-      // Absolute path to nodemon executable. Default: project_root/node_modules/.bin/nodemon. Optional
+      // Absolute path to nodemon executable. Default: root/node_modules/.bin/nodemon. Optional
       nodemon: path.resolve(__dirname, "node_modules", ".bin", "nodemon"),
-      // Absolute path to electron executable. Default: project_root/node_modules/.bin/electron. Optional
+      // Absolute path to electron executable. Default: root/node_modules/.bin/electron. Optional
       electron: path.resolve(__dirname, "node_modules", ".bin", "electron"),
       // Options to pass to `spawn` process. Optional
       options: {
@@ -44,11 +44,11 @@ And watch files changes inside `main.js`:
 const { app, BrowserWindow } = require("electron");
 // ...
 require("electron-watcher-webpack-plugin").watch({
-  // Absolute path to main process code directory. Required
-  main: __dirname,
-  // Absolute path to all application process code root directory. Required
-  root: path.resolve(__dirname, "../"),
-  // Watching enabled only in dev environment. You can force watching. Default: false. Optional
+  // List of globs for hard refresh
+  hard: [path.resolve(__dirname, "../main")],
+  // List of globs for soft refresh
+  soft: [path.resolve(__dirname, "../renderer")]
+  // Watching enabled only in dev environment, but you can force watching anytime. Default: false. Optional
   forceWatch: false
 });
 // ...

@@ -6,21 +6,24 @@ const { app } = require("electron");
 const chokidar = require("chokidar");
 
 const createHardWatcher = options => {
-  chokidar.watch(options.main).on("change", () => app.exit(0));
+  chokidar
+    .watch(options.hard, { ignored: [/node_modules|[/\\]\./] })
+    .on("change", () => {
+      return app.exit(0);
+    });
 };
 
 const createSoftWatcher = options => {
   const browserWindows = [];
   chokidar
-    .watch(options.root, { ignored: [options.main, /node_modules|[/\\]\./] })
-    .on("change", () =>
-      browserWindows.forEach(bw => bw.webContents.reloadIgnoringCache())
-    );
+    .watch(options.soft, { ignored: [/node_modules|[/\\]\./] })
+    .on("change", () => {
+      browserWindows.forEach(bw => bw.webContents.reloadIgnoringCache());
+    });
   app.on("browser-window-created", (event, bw) => {
     browserWindows.push(bw);
     bw.on("closed", () => {
-      let i = browserWindows.indexOf(bw);
-      browserWindows.splice(i, 1);
+      browserWindows.splice(browserWindows.indexOf(bw), 1);
     });
   });
 };
@@ -40,7 +43,7 @@ let webpackPluginStarted = false;
 
 exports.ElectronWatcherWebpackPlugin = function ElectronWatcherWebpackPlugin({
   root,
-  main,
+  watch,
   once = true,
   nodemon = undefined,
   electron = undefined,
@@ -54,12 +57,15 @@ exports.ElectronWatcherWebpackPlugin = function ElectronWatcherWebpackPlugin({
             if (once) {
               webpackPluginStarted = true;
             }
-
+            const watchers = [];
+            watch.forEach(w => {
+              watchers.push("--watch");
+              watchers.push(w);
+            });
             const { pid } = spawn(
               nodemon || path.resolve(root, "node_modules", ".bin", "nodemon"),
               [
-                "-w",
-                main,
+                ...watchers,
                 "-x",
                 (electron ||
                   path.resolve(root, "node_modules", ".bin", "electron")) + " ."

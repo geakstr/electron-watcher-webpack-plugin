@@ -1,6 +1,6 @@
 {
   "name": "electron-watcher-webpack-plugin",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Live reload Electron main and renderers processes with webpack plugin",
   "main": "index.js",
   "scripts": {
@@ -26,11 +26,14 @@
   "peerDependencies": {
     "electron": ">=0.0.0"
   },
+  "resolutions": {
+    "minimist": ">=0.2.1"
+  },
   "dependencies": {
-    "chokidar": "3.0.2",
-    "nodemon": "1.19.1"
+    "chokidar": "3.4.0",
+    "nodemon": "2.0.3"
   },
   "devDependencies": {
-    "npm-check": "5.9.0"
+    "npm-check": "5.9.2"
   }
 }

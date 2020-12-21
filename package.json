@@ -1,6 +1,6 @@
 {
   "name": "electron-watcher-webpack-plugin",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "Live reload Electron main and renderers processes with webpack plugin",
   "main": "index.js",
   "scripts": {
